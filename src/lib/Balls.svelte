@@ -1,6 +1,7 @@
 <script>
   import * as d3 from "d3";
   import { onMount } from "svelte";
+  import { base } from "$app/paths";
 
   // wizard source: <a href="https://www.flaticon.com/free-icons/wizard" title="wizard icons">Wizard icons created by Freepik - Flaticon</a>
   // hero source: <a href="https://www.flaticon.com/free-icons/superhero" title="superhero icons">Superhero icons created by Freepik - Flaticon</a>
@@ -411,7 +412,7 @@
     //   .attr("clip-path", "url(#edgesClip)");
     svgElement
       .append("image")
-      .attr("xlink:href", "/grass.png")
+      .attr("xlink:href", base + "/grass.png")
       .attr("x", 2)
       .attr("y", height - 20)
       .attr("width", width)
@@ -441,14 +442,14 @@
     const textSize = 35;
     svgElement
       .append("image")
-      .attr("xlink:href", "/superhero.png")
+      .attr("xlink:href", base + "/superhero.png")
       .attr("x", width / 4 - iconSize / 2)
       .attr("y", iconY)
       .attr("width", iconSize)
       .attr("height", iconSize);
     svgElement
       .append("image")
-      .attr("xlink:href", "/wizard.png")
+      .attr("xlink:href", base + "/wizard.png")
       .attr("x", (width * 3) / 4 - iconSize / 2)
       .attr("y", iconY)
       .attr("width", iconSize)
