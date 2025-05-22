@@ -3,7 +3,10 @@
 </script>
 
 <div class="main-menu">
-  <a class="main-btn" href="{base}/poll">Go to Poll</a>
+  <a class="main-btn" href="{base}/poll">
+    Go to Poll
+    <img src="{base}/qr.png" alt="QR Code" class="qr-img" /></a
+  >
   <a class="main-btn" href="{base}/vis">See Visualization</a>
 </div>
 
@@ -49,5 +52,15 @@
     transform: scale(1.03);
     outline: none;
     box-shadow: 0 8px 32px #4f8cff33;
+  }
+
+  .qr-img {
+    height: 3em;
+    width: 3em;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 0.5em;
+    box-shadow: 0 2px 8px #0001;
+    margin-left: 0.5em;
   }
 </style>
