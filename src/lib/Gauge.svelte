@@ -371,7 +371,7 @@
         // Droplet animation parameters
         const dropletDuration = 1500; // ms
         const dropletDelay = 2000; // ms
-        const delay = 2500; // ms
+        const delay = 3500; // ms
         if (drip) {
           const dropletPath =
             "M10 20c3.878 0 7.037-3.156 7.037-7.036 0-3.801-6.597-12.433-6.877-12.801L10 0l-.161.21c-.28.368-6.876 8.999-6.876 12.799C2.963 16.844 6.122 20 10 20z";
