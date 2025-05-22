@@ -1,12 +1,10 @@
 <script>
-  import { goto } from "$app/navigation";
+  import { base } from "$app/paths";
 </script>
 
 <div class="main-menu">
-  <button class="main-btn" on:click={() => goto("/poll")}>Go to Poll</button>
-  <button class="main-btn" on:click={() => goto("/vis")}
-    >See Visualization</button
-  >
+  <a class="main-btn" href="{base}/poll">Go to Poll</a>
+  <a class="main-btn" href="{base}/vis">See Visualization</a>
 </div>
 
 <style>
