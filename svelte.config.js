@@ -7,7 +7,7 @@ const config = {
       fallback: '404.html'
     }),
     paths: {
-      base: process.argv.includes('dev') ? '' : '/Playground'
+      base: process.argv.includes('dev') ? '' : '/svelte-playground'
     }
   }
 };
