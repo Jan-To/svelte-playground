@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { onMount } from "svelte";
+  import { base } from "$app/paths";
 
   let query = "";
   let geonames = [];
@@ -11,7 +12,7 @@
   // Column indices from the readme:
   // 0: geonameid, 1: name, 4: latitude, 5: longitude
   onMount(async () => {
-    const res = await fetch("/DE.txt");
+    const res = await fetch(base + "/DE.txt");
     const text = await res.text();
     geonames = text
       .split("\n")

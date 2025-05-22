@@ -19,6 +19,9 @@
   }
 
   .main-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 80vw;
     max-width: 500px;
     height: 20vh;
@@ -31,9 +34,13 @@
     color: #fff;
     box-shadow: 0 4px 24px #0002;
     cursor: pointer;
+    text-decoration: none;
     transition:
       background 0.2s,
-      transform 0.1s;
+      transform 0.1s,
+      box-shadow 0.2s;
+    text-align: center;
+    letter-spacing: 0.01em;
   }
 
   .main-btn:hover,
@@ -41,5 +48,6 @@
     background: #2a5db0;
     transform: scale(1.03);
     outline: none;
+    box-shadow: 0 8px 32px #4f8cff33;
   }
 </style>

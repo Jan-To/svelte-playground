@@ -1,6 +1,7 @@
 <script>
-  import { onMount } from "svelte";
   import * as d3 from "d3";
+  import { onMount } from "svelte";
+  import { base } from "$app/paths";
   import { hexbin as d3Hexbin } from "d3-hexbin";
 
   // get Map image from https://www.mapchart.net/europe-detailed.html#
@@ -35,7 +36,7 @@
   let x, y, bins, farBins, mapCenter;
 
   onMount(async () => {
-    const res = await fetch("/DE.txt");
+    const res = await fetch(base + "/DE.txt");
     const text = await res.text();
     geonames = text
       .split("\n")
@@ -257,7 +258,7 @@
       .attr("r", x(mapCenter.x + mapRadius) - x(mapCenter.x));
     clippedmap
       .append("image")
-      .attr("xlink:href", "/GermanyMap_01_.png")
+      .attr("xlink:href", base + "/GermanyMap_01_.png")
       .attr("class", "map-image")
       .attr("x", svgTopLeft.x)
       .attr("y", svgTopLeft.y)
