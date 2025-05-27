@@ -8,6 +8,7 @@
   import Balls from "$lib/Balls.svelte";
   import Gauges from "$lib/Gauges.svelte";
   import Map from "$lib/Map.svelte";
+  import Timetravel from "$lib/Timetravel.svelte";
   import { map } from "d3";
 
   // Firebase configuration (hide this in production)
@@ -53,6 +54,7 @@
   let ballsRef;
   let gaugesRef;
   let mapRef;
+  let timetravelRef;
 
   onMount(() => {
     const unsubscribe = onSnapshot(
@@ -69,9 +71,11 @@
           ballsRef.draw(currentVotes);
           gaugesRef.draw(currentVotes);
           mapRef.draw(currentVotes);
+          timetravelRef.draw(currentVotes);
           mapRef.update(currentVotes, newestVote);
           ballsRef.update(currentVotes, newestVote);
           gaugesRef.update(currentVotes, newestVote);
+          timetravelRef.update(currentVotes, newestVote);
           updateKPI();
         } else {
           await restartAnimations();
@@ -83,6 +87,7 @@
           await delay(1500);
           gaugesRef.update(currentVotes, newestVote);
           await delay(1500);
+          timetravelRef.update(currentVotes, newestVote);
           updateKPI();
         }
       },
@@ -92,55 +97,72 @@
   });
 </script>
 
-<div class="header">
-  <div class="headline-images">
-    <img src="{base}/database_gear.png" alt="Database" class="headline-img" />
-    <img
-      src="{base}/doc.png"
-      alt="Document"
-      class="document animate-document"
-    />
-  </div>
-  <div class="headline-text">
-    <h1 class="headline">See Beyond the Numbers</h1>
-    <h2 class="headline">Watch Your Data Come to Life</h2>
-  </div>
-  <div class="kpi-participants">
-    <span class="kpi-label">PARTICIPANTS</span>
-    <div class="kpi-numbers">
-      <span class="kpi-value">{Math.round($animatedVotes)}</span>
-      <div class="kpi-details">
-        <span class="kpi-change">&#9650;{Math.round($votesLastHour)}</span>
-        <span class="kpi-change-label">last h</span>
+<div class="page">
+  <div class="header">
+    <div class="headline-images">
+      <img src="{base}/database_gear.png" alt="Database" class="headline-img" />
+      <img
+        src="{base}/doc.png"
+        alt="Document"
+        class="document animate-document"
+      />
+    </div>
+    <div class="headline-text">
+      <h1 class="headline">See Beyond the Numbers</h1>
+      <h2 class="headline">Watch Your Data Come to Life</h2>
+    </div>
+    <div class="kpi-participants">
+      <span class="kpi-label">PARTICIPANTS</span>
+      <div class="kpi-numbers">
+        <span class="kpi-value">{Math.round($animatedVotes)}</span>
+        <div class="kpi-details">
+          <span class="kpi-change">&#9650;{Math.round($votesLastHour)}</span>
+          <span class="kpi-change-label">last h</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="update-line-container">
-  <svg class="update-line" viewBox="-5 0 3010 35" preserveAspectRatio="none">
-    <path
-      class="line-path animate-line-path"
-      d="m0 5c0 11 6 22 21 22L3000 27"
-      stroke="#4C5B94"
-      stroke-width="10"
-      stroke-linecap="round"
-      fill="none"
-    />
-  </svg>
-</div>
-<div class="vis-grid">
-  <Map bind:this={mapRef} />
+  <div class="update-line-container">
+    <svg class="update-line" viewBox="-5 0 3010 35" preserveAspectRatio="none">
+      <path
+        class="line-path"
+        d="m0 5c0 11 6 22 21 22L3000 27"
+        stroke="#f2f2f2"
+        stroke-width="10"
+        stroke-linecap="round"
+        fill="none"
+      />
+      <path
+        class="line-path animate-line-path"
+        d="m0 5c0 11 6 22 21 22L3000 27"
+        stroke="#4C5B94"
+        stroke-width="10"
+        stroke-linecap="round"
+        fill="none"
+      />
+    </svg>
+  </div>
+  <div class="vis-grid">
+    <Map bind:this={mapRef} />
 
-  <Balls bind:this={ballsRef} />
+    <Balls bind:this={ballsRef} />
 
-  <Gauges bind:this={gaugesRef} />
+    <Gauges bind:this={gaugesRef} />
+
+    <Timetravel bind:this={timetravelRef} />
+  </div>
 </div>
 
 <style>
   :root {
     --vis-min-width: 100px;
-    --vis-max-width: 500px;
+    --vis-max-width: 700px;
     --doc-delay: 4s;
+    --doc-update: 6s;
+  }
+
+  .page {
+    margin: 0 2vw;
   }
 
   .headline {
@@ -198,23 +220,24 @@
     10% {
       transform: translateY(-2.2vw);
     }
-    16% {
-      transform: translateY(-2.2vw) rotate(-6deg);
+    16%,
+    28%,
+    40%,
+    52%,
+    64%,
+    76% {
+      transform: translateY(-2.2vw) rotate(-7deg);
     }
-    22% {
+    22%,
+    34%,
+    46%,
+    58%,
+    70%,
+    82% {
       transform: translateY(-2.2vw) rotate(7deg);
     }
-    28% {
-      transform: translateY(-2.2vw) rotate(-5deg);
-    }
-    34% {
-      transform: translateY(-2.2vw) rotate(3deg);
-    }
-    40% {
+    88% {
       transform: translateY(-2.2vw) rotate(0deg);
-    }
-    46% {
-      transform: translateY(-2.2vw);
     }
     90% {
       transform: translateY(-2.2vw);
@@ -270,20 +293,17 @@
     height: 100%;
   }
 
-  .line-path {
+  .animate-line-path {
     stroke-dasharray: 3020;
     stroke-dashoffset: 3020;
-  }
-
-  .animate-line-path {
-    animation: draw-line 6s ease-in-out var(--doc-delay) forwards;
+    animation: draw-line var(--doc-update) ease-in-out var(--doc-delay) forwards;
   }
 
   @keyframes draw-line {
-    from {
+    0% {
       stroke-dashoffset: 3020;
     }
-    to {
+    100% {
       stroke-dashoffset: 0;
     }
   }
@@ -291,10 +311,9 @@
   .vis-grid {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    gap: 2%;
+    gap: 2vw;
     align-items: start;
     width: 100%;
-    height: 100vh;
     box-sizing: border-box;
   }
 
@@ -303,7 +322,7 @@
     max-width: var(--vis-max-width);
     background-color: #f8fafc;
     border-radius: 16px;
-    margin: 0.4rem 0;
+    margin: 0;
     box-shadow: 0 2px 8px #0002;
     transition: box-shadow 0.2s;
   }
@@ -319,7 +338,7 @@
   :global(h2) {
     text-align: center;
     font-size: clamp(0rem, 2vw, 50rem);
-    margin-bottom: 0.5rem;
+    margin: 1vw 0 0.5vw 0;
   }
 
   :global(.vis-component svg) {

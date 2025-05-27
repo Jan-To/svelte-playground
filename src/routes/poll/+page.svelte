@@ -59,6 +59,7 @@
   const vote = {
     time: new Date(),
     idol: "Superhero",
+    timetravel: "Past",
     emoji: "",
     drinks: [],
     location: {
@@ -67,6 +68,7 @@
       lon: 0,
     },
   };
+  const timetravelList = ["Past", "Future"];
   const idolList = ["Superhero", "Wizard"];
   const drinkList = ["Coffee", "Tea", "Juice", "Water"];
 
@@ -91,7 +93,7 @@
         <label>
           <input
             type="radio"
-            name="option"
+            name="idols"
             value={option}
             bind:group={vote.idol}
           />
@@ -115,6 +117,23 @@
         <label>
           <input type="checkbox" value={drink} bind:group={vote.drinks} />
           {drink}
+        </label>
+      {/each}
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-content">
+      <h3>Would you rather travel to the past or the future?</h3>
+      {#each timetravelList as option}
+        <label>
+          <input
+            type="radio"
+            name="timetravel"
+            value={option}
+            bind:group={vote.timetravel}
+          />
+          {option}
         </label>
       {/each}
     </div>
