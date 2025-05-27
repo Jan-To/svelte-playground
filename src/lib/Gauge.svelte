@@ -370,7 +370,7 @@
 
         // Droplet animation parameters
         const dropletDuration = 1500; // ms
-        const dropletDelay = 2000; // ms
+        const dropletDelay = 1000; // ms
         const delay = 3500; // ms
         if (drip) {
           const dropletPath =
@@ -398,16 +398,27 @@
             const dropletStartY = -10;
             const dropletEndY = height + 10;
             const dropletX = radius - fillCircleMargin;
+            const randomDelay = Math.random() * 1000 - 500;
+            const randomShift = Math.random() * radius * 0.5 - radius / 4;
             droplet
-              .attr("transform", `translate(${dropletX},${dropletStartY})`)
+              .attr(
+                "transform",
+                `translate(${dropletX + randomShift},${dropletStartY})`,
+              )
               .transition()
-              .delay(dropletDelay)
+              .delay(dropletDelay + randomDelay)
               .duration(dropletDuration)
               .ease(d3.easeExpIn)
-              .attr("transform", `translate(${dropletX},${dropletEndY} )`)
+              .attr(
+                "transform",
+                `translate(${dropletX + randomShift},${dropletEndY} )`,
+              )
               .transition()
               .duration(0)
-              .attr("transform", `translate(${dropletX},${dropletStartY})`)
+              .attr(
+                "transform",
+                `translate(${dropletX + randomShift},${dropletStartY})`,
+              )
               .on("end", animateDroplet);
           }
           animateDroplet();

@@ -7,7 +7,7 @@
   const retro_path = base + "/retro_round.png";
   const future_path = base + "/future_round.png";
 
-  let futurePercent = tweened(0, {
+  let futurePercent = tweened(1, {
     duration: 500,
     easing: cubicOut,
   });
@@ -80,29 +80,49 @@
   <div class="timetravel-container">
     <!-- Retro image -->
     <div class="img-wrap">
-      <img src={retro_path} alt="Retro" class="base-img" />
+      <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; z-index: 6;"
+        ><circle
+          style="cx:50%; cy:50%; r:48%; fill: none; stroke: #e4e4e4; stroke-width: 2.5%;"
+        ></circle></svg
+      >
+      <img
+        src={retro_path}
+        alt="Retro"
+        class="base-img"
+        style="mask-imager: radial-gradient(black 65%, transparent 70%)"
+      />
       <img
         src={retro_path}
         alt="Retro Color"
         class="color-img"
         style="mask-image: radial-gradient(black {$retroPercent *
-          65}%, transparent {$retroPercent * 65 + 5}%);"
+          68}%, transparent {$retroPercent * 68 + 5}%);"
       />
-      <div class="shadow"></div>
+      <!-- <div class="shadow"></div> -->
       <span class="label">{Math.round($retroPercent * 100)}%</span>
       <img src="{base}/beaming.gif" alt="beam" class="beam beam-past" />
     </div>
     <!-- Future image -->
     <div class="img-wrap">
-      <img src={future_path} alt="Future" class="base-img" />
+      <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; z-index: 6;"
+        ><circle
+          style="cx:50%; cy:50%; r:48%; fill: none; stroke: #e4e4e4; stroke-width: 2.5%;"
+        ></circle></svg
+      >
+      <img
+        src={future_path}
+        alt="Future"
+        class="base-img"
+        style="mask-imager: radial-gradient(black 65%, transparent 70%)"
+      />
       <img
         src={future_path}
         alt="Future Color"
         class="color-img"
         style="mask-image: radial-gradient(black {$futurePercent *
-          65}%, transparent {$futurePercent * 65 + 5}%)"
+          68}%, transparent {$futurePercent * 68 + 5}%)"
       />
-      <div class="shadow"></div>
+      <!-- <div class="shadow"></div> -->
       <span class="label">{Math.round($futurePercent * 100)}%</span>
       <img src="{base}/beaming.gif" alt="beam" class="beam beam-future" />
     </div>
@@ -177,17 +197,17 @@
 
   .beam {
     position: absolute;
-    top: 0;
     width: auto;
     height: 100%;
-    mask-image: radial-gradient(circle at center, black 45%, transparent 50%);
     mask-repeat: no-repeat;
     mask-position: center;
+    mask-size: 0% 0%;
   }
 
   .beam-wrap .beam {
+    top: 0;
     margin: 0 0 0 -38%;
-    mask-size: 0% 0%;
+    mask-image: radial-gradient(circle at center, black 45%, transparent 50%);
   }
 
   .beam-wrap :global(.beam-in-animate) {
@@ -208,8 +228,10 @@
 
   .img-wrap :global(.beam-past),
   .img-wrap :global(.beam-future) {
-    z-index: 5;
-    mask-size: 0% 0%;
+    height: 90%;
+    top: 10;
+    z-index: 3;
+    mask-image: radial-gradient(circle at center, black 48%, transparent 48%);
   }
 
   .img-wrap :global(.beam-past-animate),
@@ -247,10 +269,10 @@
   .base-img,
   .color-img {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 12;
+    left: 12;
+    width: 88%;
+    height: 88%;
     object-fit: contain;
     border-radius: 50%;
     pointer-events: none;

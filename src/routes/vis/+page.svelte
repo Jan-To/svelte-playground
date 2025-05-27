@@ -100,7 +100,11 @@
 <div class="page">
   <div class="header">
     <div class="headline-images">
-      <img src="{base}/database_gear.png" alt="Database" class="headline-img" />
+      <img
+        src="{base}/database_cloud.png"
+        alt="Database"
+        class="headline-img"
+      />
       <img
         src="{base}/doc.png"
         alt="Document"
@@ -188,14 +192,14 @@
 
   .headline-images {
     display: flex;
-    padding-top: 2vw;
+    padding-top: 1.5vw;
     padding-left: 1vw;
   }
 
   .headline-img {
     height: auto;
     width: auto;
-    max-width: 4vw;
+    max-width: 4.5vw;
     object-fit: contain;
     position: relative;
     z-index: 2;
@@ -206,7 +210,7 @@
     max-width: 3.3vw;
     position: absolute;
     z-index: 1;
-    padding-top: 0.3vw;
+    padding-top: 0.5vw;
   }
 
   .animate-document {
