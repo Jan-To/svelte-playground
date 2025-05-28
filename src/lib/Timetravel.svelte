@@ -95,8 +95,8 @@
         src={retro_path}
         alt="Retro Color"
         class="color-img"
-        style="mask-image: radial-gradient(black {$retroPercent *
-          68}%, transparent {$retroPercent * 68 + 5}%);"
+        style="mask-image: radial-gradient(black {Math.sqrt($retroPercent) *
+          68}%, transparent {Math.sqrt($retroPercent) * 68 + 5}%);"
       />
       <!-- <div class="shadow"></div> -->
       <span class="label">{Math.round($retroPercent * 100)}%</span>
@@ -119,8 +119,8 @@
         src={future_path}
         alt="Future Color"
         class="color-img"
-        style="mask-image: radial-gradient(black {$futurePercent *
-          68}%, transparent {$futurePercent * 68 + 5}%)"
+        style="mask-image: radial-gradient(black {Math.sqrt($futurePercent) *
+          68}%, transparent {Math.sqrt($futurePercent) * 68 + 5}%)"
       />
       <!-- <div class="shadow"></div> -->
       <span class="label">{Math.round($futurePercent * 100)}%</span>
@@ -290,13 +290,13 @@
     mask-position: center;
   }
 
-  .shadow {
+  /* .shadow {
     width: 100%;
     height: 100%;
     border-radius: 49%;
     z-index: 3;
     box-shadow: inset 0px 0px 0.25vw 0.25vw white;
-  }
+  } */
   .label {
     text-anchor: middle;
     font-size: 2vw;

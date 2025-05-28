@@ -111,10 +111,17 @@
         class="document animate-document"
       />
     </div>
+    <span
+      class="kpi-change-label kpi-details"
+      style="text-align: center; margin-left:3vw;"
+      >Take part <br />in the poll</span
+    >
+    <img src="{base}/qr.png" alt="QR Code" class="qr-img" />
     <div class="headline-text">
       <h1 class="headline">See Beyond the Numbers</h1>
       <h2 class="headline">Watch Your Data Come to Life</h2>
     </div>
+    <div style="width:12vw"></div>
     <div class="kpi-participants">
       <span class="kpi-label">PARTICIPANTS</span>
       <div class="kpi-numbers">
@@ -157,6 +164,21 @@
   </div>
 </div>
 
+<footer>
+  <span>Made with</span>
+  <img src="{base}/svelte.png" alt="svelteLogo" class="footer-img" />
+  <img src="{base}/firebase.png" alt="firebaseLogo" class="footer-img" />
+  <img src="{base}/github.png" alt="githubLogo" class="footer-img" />
+  <span>by Jan-Tobias Sohns at</span>
+  <img
+    src="{base}/heikeLogo.png"
+    alt="heikeLogo"
+    style="height:85%;"
+    class="footer-img"
+  />
+  <img src="{base}/rptuLogo.png" alt="rptuLogo" class="footer-img" />
+</footer>
+
 <style>
   :root {
     --vis-min-width: 100px;
@@ -165,14 +187,23 @@
     --doc-update: 6s;
   }
 
+  :global(body) {
+    margin: 0;
+  }
+
   .page {
-    margin: 0 2vw;
+    margin: 0 2.5vw;
+    margin-top: 0.5vw;
+  }
+  .qr-img {
+    height: 6vw;
+    width: auto;
   }
 
   .headline {
     display: block;
     text-align: center;
-    margin: 5px 0;
+    margin: 0.5vw 0;
   }
   h2.headline {
     font-weight: normal;
@@ -319,6 +350,7 @@
     align-items: start;
     width: 100%;
     box-sizing: border-box;
+    margin: 1vw 0;
   }
 
   :global(.vis-component) {
@@ -341,11 +373,27 @@
   }
   :global(h2) {
     text-align: center;
-    font-size: clamp(0rem, 2vw, 50rem);
+    font-size: clamp(0rem, 1.8vw, 50rem);
     margin: 1vw 0 0.5vw 0;
   }
 
   :global(.vis-component svg) {
     display: block;
+  }
+
+  footer {
+    background-color: #e4e4e4;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 0 2.5vw;
+    gap: 1vw;
+    height: 2vw;
+    margin-top: 2vw;
+    font-size: clamp(0rem, 0.7vw, 50rem);
+  }
+  .footer-img {
+    height: 75%;
+    width: auto;
   }
 </style>

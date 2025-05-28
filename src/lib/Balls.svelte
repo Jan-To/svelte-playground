@@ -1,6 +1,5 @@
 <script>
   import * as d3 from "d3";
-  import { onMount } from "svelte";
   import { base } from "$app/paths";
 
   // wizard source: <a href="https://www.flaticon.com/free-icons/wizard" title="wizard icons">Wizard icons created by Freepik - Flaticon</a>
