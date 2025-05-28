@@ -9,6 +9,7 @@
   import Gauges from "$lib/Gauges.svelte";
   import Map from "$lib/Map.svelte";
   import Timetravel from "$lib/Timetravel.svelte";
+  import Swarm from "$lib/Swarm.svelte";
   import { map } from "d3";
 
   // Firebase configuration (hide this in production)
@@ -55,6 +56,7 @@
   let gaugesRef;
   let mapRef;
   let timetravelRef;
+  let swarmRef;
 
   onMount(() => {
     const unsubscribe = onSnapshot(
@@ -72,10 +74,14 @@
           gaugesRef.draw(currentVotes);
           mapRef.draw(currentVotes);
           timetravelRef.draw(currentVotes);
-          mapRef.update(currentVotes, newestVote);
-          ballsRef.update(currentVotes, newestVote);
-          gaugesRef.update(currentVotes, newestVote);
-          timetravelRef.update(currentVotes, newestVote);
+          swarmRef.draw(currentVotes);
+          if (newestVote) {
+            mapRef.update(currentVotes, newestVote);
+            ballsRef.update(currentVotes, newestVote);
+            gaugesRef.update(currentVotes, newestVote);
+            timetravelRef.update(currentVotes, newestVote);
+          }
+
           updateKPI();
         } else {
           await restartAnimations();
@@ -161,6 +167,8 @@
     <Gauges bind:this={gaugesRef} />
 
     <Timetravel bind:this={timetravelRef} />
+
+    <Swarm bind:this={swarmRef} />
   </div>
 </div>
 
@@ -169,7 +177,7 @@
   <img src="{base}/svelte.png" alt="svelteLogo" class="footer-img" />
   <img src="{base}/firebase.png" alt="firebaseLogo" class="footer-img" />
   <img src="{base}/github.png" alt="githubLogo" class="footer-img" />
-  <span>by Jan-Tobias Sohns at</span>
+  <span>at</span>
   <img
     src="{base}/heikeLogo.png"
     alt="heikeLogo"
@@ -361,6 +369,7 @@
     margin: 0;
     box-shadow: 0 2px 8px #0002;
     transition: box-shadow 0.2s;
+    overflow: hidden;
   }
 
   :global(.vis-component.double) {

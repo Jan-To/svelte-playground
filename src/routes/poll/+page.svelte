@@ -23,6 +23,17 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  let minutesSinceFive = 0; // 0 to 240 (4 hours)
+  const step = 1; // in minutes
+
+  function formatTime(minutes) {
+    const totalMinutes = 5.5 * 60 + minutes;
+    const hour = Math.floor(totalMinutes / 60);
+    const minute = totalMinutes % 60;
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+    return `${displayHour}:${minute.toString().padStart(2, "0")}h`;
+  }
+
   const sendVote = async (vote) => {
     // set current time
     vote.time = new Date();
@@ -43,6 +54,11 @@
       vote.location.lat = loc.lat;
       vote.location.lon = loc.lon;
     }
+    // set date
+    const totalMinutes = 5.5 * 60 + minutesSinceFive;
+    const hour = Math.floor(totalMinutes / 60);
+    const minute = totalMinutes % 60;
+    vote.getuptime = new Date(2025, 0, 1, hour, minute);
     console.log("Vote sent:", vote);
     const voteDict = Object.keys(vote).reduce((acc, key) => {
       acc[key] = vote[key];
@@ -67,10 +83,13 @@
       lat: 0,
       lon: 0,
     },
+    getuptime: new Date(2025, 0, 1, 5, 30),
+    breakfast: "Bread",
   };
   const timetravelList = ["Past", "Future"];
   const idolList = ["Superhero", "Wizard"];
   const drinkList = ["Coffee", "Tea", "Juice", "Water"];
+  const breakfastList = ["Bread", "Cereal", "Nothing"];
 
   let LocSelectRef = null;
   let EmojiPickRef = null;
@@ -132,6 +151,39 @@
             name="timetravel"
             value={option}
             bind:group={vote.timetravel}
+          />
+          {option}
+        </label>
+      {/each}
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-content">
+      <h3>When did you get up today?</h3>
+      <label>
+        <input
+          type="range"
+          min="0"
+          max="210"
+          {step}
+          bind:value={minutesSinceFive}
+        />
+        {formatTime(minutesSinceFive)}
+      </label>
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-content">
+      <h3>What did you eat for breatfast?</h3>
+      {#each breakfastList as option}
+        <label>
+          <input
+            type="radio"
+            name="breakfast"
+            value={option}
+            bind:group={vote.breakfast}
           />
           {option}
         </label>
@@ -239,6 +291,10 @@
     border-radius: 50%;
     border: 1.5px solid var(--input-border);
     transition: border 0.2s;
+  }
+
+  input[type="range"] {
+    width: 60%;
   }
 
   :global(input[type="text"]),

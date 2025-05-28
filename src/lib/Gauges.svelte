@@ -1,6 +1,5 @@
 <script>
   import Gauge from "$lib/Gauge.svelte";
-  import { onMount } from "svelte";
 
   let gauges = [
     {
@@ -113,7 +112,6 @@
   export function update(currentVotes, newestVote) {
     const percentages = getDrinkPercentages(currentVotes);
     setDrinkPercentages(percentages);
-    console.log(newestVote);
     // Redraw the gauges with the new values
     gauges.forEach((gauge) => {
       const drip = newestVote.drinks && newestVote.drinks.includes(gauge.label);
