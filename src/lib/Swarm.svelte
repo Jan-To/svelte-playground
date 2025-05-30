@@ -1,19 +1,50 @@
 <script>
   import * as d3 from "d3";
   import { base } from "$app/paths";
-  import { onMount } from "svelte";
   import { scaleTime } from "d3-scale";
   import { axisBottom } from "d3-axis";
   import { nonpassive } from "svelte/legacy";
+  import { onMount, onDestroy } from "svelte";
 
-  let svgRef, svgAxRef, width, height;
+  let svgRef, svgAxRef, containerRef, width, height;
   let data = [];
   const marginTop = 0;
   const marginRight = 30;
   const marginBottom = 23;
   const marginLeft = 30;
-  let radius = 18;
   const padding = 1;
+  let radius = 18;
+  const time = 60;
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dez",
+  ];
+  let currentIndex = 6;
+  let currentMonth = months[currentIndex];
+  // Change the string every second
+  const interval = setInterval(
+    () => {
+      currentIndex = (currentIndex + 1) % months.length;
+      currentMonth = months[currentIndex];
+    },
+    (time * 1000) / 12,
+  );
+  // Cleanup on unmount
+  onDestroy(() => clearInterval(interval));
+
+  onMount(() => {
+    containerRef?.style.setProperty("--time", time);
+  });
 
   function dodge(data, { radius = 1, x = (d) => d } = {}) {
     const radius2 = radius ** 2;
@@ -111,19 +142,19 @@
 </script>
 
 <div class="vis-component double">
-  <h2>When do you get up?</h2>
-  <div class="container">
+  <h2>How did you get up today?</h2>
+  <div bind:this={containerRef} class="container">
     <div class="background sky"></div>
     <div class="background ground"></div>
     <svg bind:this={svgRef} viewBox="0 0 600 150">
       <path
         id="moonPath"
-        d="M11 149C27 69 76 16 150 6 75 16 27 69 11 149"
+        d="M11 154C27 74 76 21 150 11 75 21 27 74 11 154"
         fill="none"
       />
       <image href={base + "/moon.png"} width="35" height="35">
         <animateMotion
-          dur="10s"
+          dur="{time}s"
           repeatCount="indefinite"
           rotate="90deg"
           keyPoints="0;0;0.5;0.5;1;1"
@@ -139,7 +170,7 @@
       />
       <image href={base + "/sun.png"} width="40" height="40">
         <animateMotion
-          dur="10s"
+          dur="{time}s"
           repeatCount="indefinite"
           rotate="90deg"
           keyPoints="0;0;0.5;0.5;1;1"
@@ -159,7 +190,11 @@
         {/each}
       </g>
     </svg>
-    <svg bind:this={svgAxRef} viewBox="0 0 600 150" class="axSVG"></svg>
+    <svg bind:this={svgAxRef} viewBox="0 0 600 150" class="axSVG">
+      <text x="580" y="19" font-size="13" text-anchor="middle"
+        >{currentMonth}</text
+      >
+    </svg>
   </div>
 </div>
 
@@ -194,7 +229,8 @@
   .background {
     position: absolute;
     width: 200%;
-    animation: slide 5s ease-in-out infinite alternate;
+    animation: slide calc(var(--time) * 1s) cubic-bezier(0.2, 0, 0.8, 1)
+      infinite;
   }
   .sky {
     height: 100%;
@@ -202,8 +238,8 @@
     background: linear-gradient(
       to right,
       #1f2d60 0%,
-      #1f2d60 49%,
-      #448ff7 51%,
+      #1f2d60 48%,
+      #448ff7 52%,
       #90e0ef 100%
     );
   }
@@ -214,18 +250,19 @@
     background: linear-gradient(
       to right,
       #465d32 0%,
-      #465d32 49%,
-      #64953a 51%,
+      #465d32 48%,
+      #64953a 52%,
       #64953a 100%
     );
   }
 
   @keyframes slide {
-    0% {
+    0%,
+    100% {
       transform: translateX(-47%);
     }
-    100% {
-      transform: translateX(-9%); /* Shift background to the left */
+    50% {
+      transform: translateX(-9%);
     }
   }
 </style>
