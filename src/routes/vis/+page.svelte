@@ -117,17 +117,17 @@
         class="document animate-document"
       />
     </div>
-    <span
+    <!-- <span
       class="kpi-change-label kpi-details"
       style="text-align: center; margin-left:3vw;"
       >Take part <br />in the poll</span
     >
-    <img src="{base}/qr.png" alt="QR Code" class="qr-img" />
+    <img src="{base}/qr.png" alt="QR Code" class="qr-img" /> -->
     <div class="headline-text">
       <h1 class="headline">See Beyond the Numbers</h1>
       <h2 class="headline">Watch Your Data Come to Life</h2>
     </div>
-    <div style="width:12vw"></div>
+    <!-- <div style="width:12vw"></div> -->
     <div class="kpi-participants">
       <span class="kpi-label">PARTICIPANTS</span>
       <div class="kpi-numbers">
@@ -169,6 +169,15 @@
     <Timetravel bind:this={timetravelRef} />
 
     <Swarm bind:this={swarmRef} />
+
+    <div class="vis-component">
+      <h2>Take part in the poll</h2>
+      <div class="qr-container">
+        <a href="{base}/poll">
+          <img src="{base}/qr-trans.png" alt="QR Code" class="qr-img" /></a
+        >
+      </div>
+    </div>
   </div>
 </div>
 
@@ -203,9 +212,17 @@
     margin: 0 2.5vw;
     margin-top: 0.5vw;
   }
+  .qr-container {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    position: relative;
+  }
   .qr-img {
-    height: 6vw;
+    /* height: 6vw; */
+    height: 100%;
     width: auto;
+    margin: 0 auto;
+    display: block;
   }
 
   .headline {

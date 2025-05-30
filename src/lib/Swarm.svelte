@@ -139,6 +139,8 @@
     }
     data = temp_data[0];
   }
+
+  export function update(currentVotes, newestVote) {}
 </script>
 
 <div class="vis-component double">
