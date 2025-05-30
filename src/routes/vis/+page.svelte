@@ -86,6 +86,7 @@
         } else {
           await restartAnimations();
           await delay(4000);
+          swarmRef.update(currentVotes);
           await delay(1500);
           mapRef.update(currentVotes, newestVote);
           await delay(1500);

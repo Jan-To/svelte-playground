@@ -84,12 +84,12 @@
       lon: 0,
     },
     getuptime: new Date(2025, 0, 1, 5, 30),
-    breakfast: "Bread",
+    breakfast: "Sweet",
   };
   const timetravelList = ["Past", "Future"];
   const idolList = ["Superhero", "Wizard"];
   const drinkList = ["Coffee", "Tea", "Juice", "Water"];
-  const breakfastList = ["Bread", "Cereal", "Nothing"];
+  const breakfastList = ["Sweet", "Salty", "Nothing"];
 
   let LocSelectRef = null;
   let EmojiPickRef = null;

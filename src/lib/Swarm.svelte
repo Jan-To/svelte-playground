@@ -3,12 +3,13 @@
   import { base } from "$app/paths";
   import { scaleTime } from "d3-scale";
   import { axisBottom } from "d3-axis";
+  import { flip } from "svelte/animate";
   import { nonpassive } from "svelte/legacy";
   import { onMount, onDestroy } from "svelte";
 
   let svgRef, svgAxRef, containerRef, width, height;
   let data = [];
-  const marginTop = 0;
+  const marginTop = 5;
   const marginRight = 30;
   const marginBottom = 23;
   const marginLeft = 30;
@@ -49,7 +50,7 @@
   function dodge(data, { radius = 1, x = (d) => d } = {}) {
     const radius2 = radius ** 2;
     const circles = data
-      .map((d, i, data) => ({ x: +x(d, i, data), data: d }))
+      .map((d, i, data) => ({ x: +x(d, i, data), data: d, id: i }))
       .sort((a, b) => a.x - b.x);
     const epsilon = 1e-3;
     let head = null,
@@ -88,18 +89,16 @@
       if (head === null) head = tail = b;
       else tail = tail.next = b;
     }
-    const max_y = circles
-      .filter((c) => c.y)
-      .reduce((p, c) => (p.y > c.y ? p.y : c.y));
+    const max_y = circles.map((c) => c.y).reduce((p, c) => (p > c ? p : c));
 
     return [circles, max_y];
   }
 
   const getBreakfastEmoji = (breakfast) => {
     switch (breakfast) {
-      case "Bread":
+      case "Salty":
         return "🥪";
-      case "Cereal":
+      case "Sweet":
         return "🍩";
       case "Nothing":
         return "🚫";
@@ -113,6 +112,7 @@
       getuptime: new Date(d.getuptime.seconds * 1000),
       breakfast: d.breakfast,
       breakfastEmoji: getBreakfastEmoji(d.breakfast),
+      timestamp: d.time,
     }));
 
     const svg = d3.select(svgRef);
@@ -135,12 +135,13 @@
         radius: radius * 2 + padding,
         x: (d) => timeScale(d.getuptime),
       });
-      console.log(temp_data[1]);
     }
     data = temp_data[0];
   }
 
-  export function update(currentVotes, newestVote) {}
+  export function update(currentVotes, newestVote) {
+    draw(currentVotes);
+  }
 </script>
 
 <div class="vis-component double">
@@ -182,8 +183,9 @@
         </animateMotion>
       </image>
       <g>
-        {#each data as d}
+        {#each data as d (d.data.timestamp.seconds)}
           <text
+            animate:flip
             class="breakfast"
             x={d.x}
             y={height - marginBottom - radius - padding - d.y}
