@@ -1,12 +1,16 @@
 <script>
   import { base } from "$app/paths";
+  function handleClick() {
+    window.open(`${base}/poll`, "_blank"); // open in new tab
+    window.location.href = `${base}/vis`; // navigate current tab
+  }
 </script>
 
 <div class="main-menu">
-  <a class="main-btn" href="{base}/poll">
+  <button class="main-btn" on:click={handleClick}>
     Go to Poll
-    <img src="{base}/qr.png" alt="QR Code" class="qr-img" /></a
-  >
+    <img src="{base}/qr.png" alt="QR Code" class="qr-img" />
+  </button>
   <a class="main-btn" href="{base}/vis">See Visualization</a>
 </div>
 

@@ -42,11 +42,12 @@
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   async function restartAnimations() {
-    const animationClasses = ["document", "line-path"];
+    const animationClasses = ["document", "moving-line"];
     for (const c of animationClasses) {
       const el = document.querySelector("." + c);
       el.classList.remove("animate-" + c);
       void el.offsetWidth;
+      await tick();
       await delay(10);
       el.classList.add("animate-" + c);
     }
@@ -75,26 +76,20 @@
           mapRef.draw(currentVotes);
           timetravelRef.draw(currentVotes);
           swarmRef.draw(currentVotes);
-          if (newestVote) {
-            mapRef.update(currentVotes, newestVote);
-            ballsRef.update(currentVotes, newestVote);
-            gaugesRef.update(currentVotes, newestVote);
-            timetravelRef.update(currentVotes, newestVote);
-          }
-
           updateKPI();
         } else {
+          await delay(500);
           await restartAnimations();
           await delay(4000);
-          swarmRef.update(currentVotes);
-          await delay(1500);
+          await delay(1200);
           mapRef.update(currentVotes, newestVote);
           await delay(1500);
           ballsRef.update(currentVotes, newestVote);
-          await delay(1500);
-          gaugesRef.update(currentVotes, newestVote);
-          await delay(1500);
+          await delay(500);
           timetravelRef.update(currentVotes, newestVote);
+          gaugesRef.update(currentVotes, newestVote);
+          await delay(8000);
+          swarmRef.update(currentVotes);
           updateKPI();
         }
       },
@@ -151,7 +146,7 @@
         fill="none"
       />
       <path
-        class="line-path animate-line-path"
+        class="line-path moving-line animate-moving-line"
         d="m0 5c0 11 6 22 21 22L3000 27"
         stroke="#4C5B94"
         stroke-width="10"
@@ -354,7 +349,7 @@
     height: 100%;
   }
 
-  .animate-line-path {
+  .animate-moving-line {
     stroke-dasharray: 3020;
     stroke-dashoffset: 3020;
     animation: draw-line var(--doc-update) ease-in-out var(--doc-delay) forwards;
