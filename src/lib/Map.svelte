@@ -86,7 +86,7 @@
     d3.select(svgEl).selectAll("*").remove();
     const svg = d3.select(svgEl);
     const [, , width, height] = svg.attr("viewBox").split(" ").map(Number);
-    const margin = { top: 19, right: 20, bottom: 20, left: 12.5 };
+    const margin = { top: 19, right: 20, bottom: 20, left: 20 };
 
     // Get locations
     let locations = votes

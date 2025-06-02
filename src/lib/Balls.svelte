@@ -391,24 +391,24 @@
       .attr("height", height)
       .attr("rx", cornerRadius)
       .attr("ry", cornerRadius);
-    // svgElement
-    //   .append("rect")
-    //   .attr("class", "background")
-    //   .attr("x", 0)
-    //   .attr("y", 0)
-    //   .attr("width", width / 2)
-    //   .attr("height", height)
-    //   .attr("fill", colorA)
-    //   .attr("clip-path", "url(#edgesClip)");
-    // svgElement
-    //   .append("rect")
-    //   .attr("class", "background")
-    //   .attr("x", width / 2)
-    //   .attr("y", 0)
-    //   .attr("width", width / 2)
-    //   .attr("height", height)
-    //   .attr("fill", colorB)
-    //   .attr("clip-path", "url(#edgesClip)");
+    svgElement
+      .append("rect")
+      .attr("class", "background")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", width / 2)
+      .attr("height", height)
+      .attr("fill", colorA)
+      .attr("clip-path", "url(#edgesClip)");
+    svgElement
+      .append("rect")
+      .attr("class", "background")
+      .attr("x", width / 2)
+      .attr("y", 0)
+      .attr("width", width / 2)
+      .attr("height", height)
+      .attr("fill", colorB)
+      .attr("clip-path", "url(#edgesClip)");
     svgElement
       .append("image")
       .attr("xlink:href", base + "/grass.png")

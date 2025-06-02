@@ -78,17 +78,17 @@
           swarmRef.draw(currentVotes);
           updateKPI();
         } else {
-          await delay(500);
+          await delay(2000);
           await restartAnimations();
           await delay(4000);
+          gaugesRef.update(currentVotes, newestVote);
           await delay(1200);
           mapRef.update(currentVotes, newestVote);
           await delay(1500);
           ballsRef.update(currentVotes, newestVote);
-          await delay(500);
+          // await delay(500);
           timetravelRef.update(currentVotes, newestVote);
-          gaugesRef.update(currentVotes, newestVote);
-          await delay(8000);
+          // await delay(8000);
           swarmRef.update(currentVotes);
           updateKPI();
         }
@@ -167,7 +167,7 @@
     <Swarm bind:this={swarmRef} />
 
     <div class="vis-component">
-      <h2>Take part in the poll</h2>
+      <h2>Become a part of this</h2>
       <div class="qr-container">
         <a href="{base}/poll">
           <img src="{base}/qr-trans.png" alt="QR Code" class="qr-img" /></a
@@ -179,17 +179,22 @@
 
 <footer>
   <span>Made with</span>
-  <img src="{base}/svelte.png" alt="svelteLogo" class="footer-img" />
-  <img src="{base}/firebase.png" alt="firebaseLogo" class="footer-img" />
-  <img src="{base}/github.png" alt="githubLogo" class="footer-img" />
+  <a href="https://svelte.dev" target="_blank" class="footer-img">
+    <img src="{base}/svelte.png" alt="svelteLogo" />
+  </a>
+  <a href="https://firebase.google.com" target="_blank" class="footer-img">
+    <img src="{base}/firebase.png" alt="firebaseLogo" />
+  </a>
+  <a href="https://github.com" target="_blank" class="footer-img">
+    <img src="{base}/github.png" alt="githubLogo" />
+  </a>
   <span>at</span>
-  <img
-    src="{base}/heikeLogo.png"
-    alt="heikeLogo"
-    style="height:85%;"
-    class="footer-img"
-  />
-  <img src="{base}/rptuLogo.png" alt="rptuLogo" class="footer-img" />
+  <a href="https://vis.cs.rptu.de/" target="_blank" class="footer-img">
+    <img src="{base}/heikeLogo.png" alt="heikeLogo" />
+  </a>
+  <a href="https://rptu.de" target="_blank" class="footer-img footer-img--rptu">
+    <img src="{base}/rptuLogo.png" alt="rptuLogo" />
+  </a>
 </footer>
 
 <style>
@@ -378,7 +383,7 @@
     min-width: var(--vis-min-width);
     max-width: var(--vis-max-width);
     background-color: #f8fafc;
-    border-radius: 16px;
+    border-radius: 1vw;
     margin: 0;
     box-shadow: 0 2px 8px #0002;
     transition: box-shadow 0.2s;
@@ -416,6 +421,13 @@
   }
   .footer-img {
     height: 75%;
-    width: auto;
+    display: flex;
+    align-items: center;
+  }
+  .footer-img img {
+    height: 100%;
+  }
+  .footer-img--rptu img {
+    height: 75%;
   }
 </style>
