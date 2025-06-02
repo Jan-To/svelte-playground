@@ -171,7 +171,7 @@
       <h2>{$t.callforaction}</h2>
       <div class="qr-container">
         <a href="{base}/poll">
-          <img src="{base}/qr-trans.png" alt="QR Code" class="qr-img" /></a
+          <img src="{base}/qr.png" alt="QR Code" class="qr-img" /></a
         >
       </div>
     </div>

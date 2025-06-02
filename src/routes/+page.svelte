@@ -9,7 +9,9 @@
 <div class="main-menu">
   <button class="main-btn" on:click={handleClick}>
     Go to Poll
-    <img src="{base}/qr.png" alt="QR Code" class="qr-img" />
+    <div class="qr-bg">
+      <img src="{base}/qr.png" alt="QR Code" class="qr-img" />
+    </div>
   </button>
   <a class="main-btn" href="{base}/vis">See Visualization</a>
 </div>
@@ -58,7 +60,7 @@
     box-shadow: 0 8px 32px #4f8cff33;
   }
 
-  .qr-img {
+  .qr-bg {
     height: 3em;
     width: 3em;
     object-fit: contain;
@@ -66,5 +68,13 @@
     border-radius: 0.5em;
     box-shadow: 0 2px 8px #0001;
     margin-left: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-img {
+    height: 85%;
+    width: 85%;
   }
 </style>
