@@ -13,19 +13,8 @@
   // Column indices from the readme:
   // 0: geonameid, 1: name, 4: latitude, 5: longitude
   onMount(async () => {
-    const res = await fetch(base + "/DE.txt");
-    const text = await res.text();
-    geonames = text
-      .split("\n")
-      .filter((line) => line && !line.startsWith("//"))
-      .map((line) => line.split("\t"))
-      .filter((fields) => fields.length > 5 && fields[14] > 0)
-      .map((fields) => ({
-        name: fields[1],
-        lat: parseFloat(fields[4]),
-        lon: parseFloat(fields[5]),
-        pop: parseFloat(fields[14]),
-      }));
+    const res = await fetch(base + "/DE.min.json");
+    geonames = await res.json();
   });
 
   // Reactive filtering
@@ -93,7 +82,8 @@
             on:keydown={(e) =>
               (e.key === "Enter" || e.key === " ") && selectLoc(loc)}
           >
-            {loc.name} ({loc.pop} population)
+            {loc.name} ({loc.pop}
+            {$t.pop})
           </div>
         </li>
       {/each}

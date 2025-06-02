@@ -37,6 +37,7 @@ const translations = {
     cityplaceholdertext: "Enter a city",
     polltitle: "Visualize Your Data",
     pollbutton: "Submit",
+    pop: "pop.",
   },
   de: {
     title: "Sehen und Verstehen",
@@ -65,5 +66,6 @@ const translations = {
     cityplaceholdertext: "Wähle eine Stadt",
     polltitle: "Zeige deine Daten an",
     pollbutton: "Teilnehmen",
+    pop: "Einwohner",
   },
 };
