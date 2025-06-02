@@ -37,18 +37,8 @@
   let x, y, bins, farBins, mapCenter;
 
   onMount(async () => {
-    const res = await fetch(base + "/DE.txt");
-    const text = await res.text();
-    geonames = text
-      .split("\n")
-      .filter((line) => line && !line.startsWith("//"))
-      .map((line) => line.split("\t"))
-      .filter((fields) => fields.length > 5)
-      .map((fields) => ({
-        name: fields[1],
-        lat: parseFloat(fields[4]),
-        lon: parseFloat(fields[5]),
-      }));
+    const res = await fetch(base + "/DE.min.json");
+    geonames = await res.json();
 
     landmarks = landmarkList
       .map((name) => {
