@@ -2,6 +2,7 @@
   import { base } from "$app/paths";
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
+  import { t } from "$lib/i18n.js";
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const retro_path = base + "/retro_round.png";
@@ -76,7 +77,7 @@
 </script>
 
 <div class="vis-component">
-  <h2>The past or the future?</h2>
+  <h2>{$t.timetraveltitle}</h2>
   <div class="timetravel-container">
     <!-- Retro image -->
     <div class="img-wrap">

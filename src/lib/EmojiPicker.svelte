@@ -1,5 +1,7 @@
 <script>
   import { onMount } from "svelte";
+  import { t } from "$lib/i18n.js";
+
   let showEmojiPicker = false;
   let emoji = "";
 
@@ -32,7 +34,7 @@
 <div style="display: flex; gap: 0.5em; align-items: center;">
   <input
     type="text"
-    placeholder="Enter an emoji"
+    placeholder={$t.emojiplaceholdertext}
     readonly={!isMobile}
     bind:value={emoji}
     on:focus={() => {

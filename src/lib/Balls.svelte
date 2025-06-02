@@ -1,12 +1,15 @@
 <script>
   import * as d3 from "d3";
   import { base } from "$app/paths";
+  import { t } from "$lib/i18n.js";
 
   // wizard source: <a href="https://www.flaticon.com/free-icons/wizard" title="wizard icons">Wizard icons created by Freepik - Flaticon</a>
   // hero source: <a href="https://www.flaticon.com/free-icons/superhero" title="superhero icons">Superhero icons created by Freepik - Flaticon</a>
 
-  let currentVotes = [];
-  let svgRef, width, height;
+  let currentVotes = [],
+    svgRef,
+    width = 600,
+    height = 300;
   const numBalls = 50;
 
   let [sideCountA, sideCountB] = getSideCount();
@@ -27,6 +30,14 @@
   const divider = {
     r: 30,
   };
+
+  const colorA = "#ffd4d4",
+    colorB = "#cdddf7";
+  const cornerRadius = 12;
+  const iconSize = 35;
+  const iconY = 40;
+  const textSpacing = 8;
+  const textSize = 35;
 
   function getEmojis() {
     // Get emojis from the current votes
@@ -324,6 +335,8 @@
 
     updateSeesaw();
 
+    [sideCountA, sideCountB] = getSideCount();
+
     function ticked() {
       // Stop the simulation after X loops
       ticks++;
@@ -376,49 +389,6 @@
         .attr("transform", `rotate(${seesaw.angle}, ${seats.lx}, ${seats.ly})`);
     }
 
-    // Draw the background
-    const colorA = "#ffd4d4",
-      colorB = "#cdddf7";
-    const cornerRadius = 12;
-    svgElement
-      .append("defs")
-      .append("clipPath")
-      .attr("id", "edgesClip")
-      .append("rect")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("width", width)
-      .attr("height", height)
-      .attr("rx", cornerRadius)
-      .attr("ry", cornerRadius);
-    svgElement
-      .append("rect")
-      .attr("class", "background")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("width", width / 2)
-      .attr("height", height)
-      .attr("fill", colorA)
-      .attr("clip-path", "url(#edgesClip)");
-    svgElement
-      .append("rect")
-      .attr("class", "background")
-      .attr("x", width / 2)
-      .attr("y", 0)
-      .attr("width", width / 2)
-      .attr("height", height)
-      .attr("fill", colorB)
-      .attr("clip-path", "url(#edgesClip)");
-    svgElement
-      .append("image")
-      .attr("xlink:href", base + "/grass.png")
-      .attr("x", 2)
-      .attr("y", height - 20)
-      .attr("width", width)
-      .attr("height", 20)
-      .attr("preserveAspectRatio", "none")
-      .attr("clip-path", "url(#edgesClip)");
-
     // Draw the emojis
     const circles = svgElement
       .selectAll("text")
@@ -433,67 +403,6 @@
       .attr("font-size", (d) => 1.9 * d.r) // Font size proportional to the circle radius
       .attr("fill", "black") // Text color
       .text((d) => d.emoji); // Replace with the desired emoji
-
-    // Draw the icons
-    const iconSize = 35;
-    const iconY = 40;
-    const textSpacing = 8;
-    const textSize = 35;
-    svgElement
-      .append("image")
-      .attr("xlink:href", base + "/superhero.png")
-      .attr("x", width / 4 - iconSize / 2)
-      .attr("y", iconY)
-      .attr("width", iconSize)
-      .attr("height", iconSize);
-    svgElement
-      .append("image")
-      .attr("xlink:href", base + "/wizard.png")
-      .attr("x", (width * 3) / 4 - iconSize / 2)
-      .attr("y", iconY)
-      .attr("width", iconSize)
-      .attr("height", iconSize);
-
-    // Draw the labels
-    [sideCountA, sideCountB] = getSideCount();
-    svgElement
-      .append("text")
-      .attr("id", "sideALabel")
-      .attr("x", width / 4)
-      .attr("y", iconY + iconSize + textSpacing + textSize / 2)
-      .attr("text-anchor", "middle")
-      .attr("dominant-baseline", "central")
-      .attr("font-size", textSize)
-      .attr("font-weight", "bold")
-      .attr("fill", "black")
-      .text(sideCountA);
-    svgElement
-      .append("text")
-      .attr("id", "sideBLabel")
-      .attr("x", (width * 3) / 4)
-      .attr("y", iconY + iconSize + textSpacing + textSize / 2)
-      .attr("text-anchor", "middle")
-      .attr("dominant-baseline", "central")
-      .attr("font-size", textSize)
-      .attr("font-weight", "bold")
-      .attr("fill", "black")
-      .text(sideCountB);
-    svgElement
-      .append("text")
-      .attr("x", (width * 3) / 4)
-      .attr("y", iconY + iconSize + 1.8 * textSpacing + textSize)
-      .attr("text-anchor", "middle")
-      .attr("font-size", textSize / 3)
-      .attr("fill", "black")
-      .text("votes");
-    svgElement
-      .append("text")
-      .attr("x", width / 4)
-      .attr("y", iconY + iconSize + 1.8 * textSpacing + textSize)
-      .attr("text-anchor", "middle")
-      .attr("font-size", textSize / 3)
-      .attr("fill", "black")
-      .text("votes");
 
     // Draw the bouncer
     const bouncerSize = 14;
@@ -628,10 +537,122 @@
 
 <div class="vis-component double">
   <h2>
-    Rather be a <span class="hero">superhero</span> or a
-    <span class="wizard">wizard</span>?
+    {$t.herotitle}
   </h2>
-  <svg bind:this={svgRef} viewBox="0 0 600 300"></svg>
+  <svg bind:this={svgRef} viewBox="0 0 600 300">
+    <!-- Clip path definition -->
+    <defs>
+      <clipPath id="edgesClip">
+        <rect
+          x="0"
+          y="0"
+          {width}
+          {height}
+          rx={cornerRadius}
+          ry={cornerRadius}
+        />
+      </clipPath>
+    </defs>
+
+    <!-- Background rectangles -->
+    <rect
+      class="background"
+      x="0"
+      y="0"
+      width={width / 2}
+      {height}
+      fill={colorA}
+      clip-path="url(#edgesClip)"
+    />
+    <rect
+      class="background"
+      x={width / 2}
+      y="0"
+      width={width / 2}
+      {height}
+      fill={colorB}
+      clip-path="url(#edgesClip)"
+    />
+
+    <!-- Grass image -->
+    <image
+      xlink:href="{base}/grass.png"
+      x="2"
+      y={height - 20}
+      {width}
+      height="20"
+      preserveAspectRatio="none"
+      clip-path="url(#edgesClip)"
+    />
+
+    <!-- Superhero Icon -->
+    <image
+      xlink:href="{base}/superhero.png"
+      x={width / 4 - iconSize / 2}
+      y={iconY}
+      width={iconSize}
+      height={iconSize}
+    />
+
+    <!-- Wizard Icon -->
+    <image
+      xlink:href="{base}/wizard.png"
+      x={(width * 3) / 4 - iconSize / 2}
+      y={iconY}
+      width={iconSize}
+      height={iconSize}
+    />
+
+    <!-- Side A Label -->
+    <text
+      id="sideALabel"
+      x={width / 4}
+      y={iconY + iconSize + textSpacing + textSize / 2}
+      text-anchor="middle"
+      dominant-baseline="central"
+      font-size={textSize}
+      font-weight="bold"
+      fill="black"
+    >
+      {sideCountA}
+    </text>
+
+    <!-- Side B Label -->
+    <text
+      id="sideBLabel"
+      x={(width * 3) / 4}
+      y={iconY + iconSize + textSpacing + textSize / 2}
+      text-anchor="middle"
+      dominant-baseline="central"
+      font-size={textSize}
+      font-weight="bold"
+      fill="black"
+    >
+      {sideCountB}
+    </text>
+
+    <!-- Side A "votes" -->
+    <text
+      x={width / 4}
+      y={iconY + iconSize + 1.8 * textSpacing + textSize}
+      text-anchor="middle"
+      font-size={textSize / 3}
+      fill="black"
+    >
+      {$t.votes}
+    </text>
+
+    <!-- Side B "votes" -->
+    <text
+      x={(width * 3) / 4}
+      y={iconY + iconSize + 1.8 * textSpacing + textSize}
+      text-anchor="middle"
+      font-size={textSize / 3}
+      fill="black"
+    >
+      {$t.votes}
+    </text>
+  </svg>
 </div>
 
 <style>

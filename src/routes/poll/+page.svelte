@@ -8,6 +8,7 @@
   } from "firebase/firestore";
   import LocSelect from "$lib/LocSelect.svelte";
   import EmojiPicker from "$lib/EmojiPicker.svelte";
+  import { t, lang, setLang } from "$lib/i18n.js";
 
   // Firebase configuration (hide this in production)
   const firebaseConfig = {
@@ -54,19 +55,40 @@
       vote.location.lat = loc.lat;
       vote.location.lon = loc.lon;
     }
+    // set drinks
+    vote.drinks = vote.drinks
+      .map((d) =>
+        drinkList.includes(d) ? d : drinkList[$t.drinksoptions.indexOf(d)],
+      )
+      .filter(Boolean);
+    // set idol
+    if (!idolList.includes(vote.idol)) {
+      vote.idol = idolList[$t.idoloptions.indexOf(vote.idol)];
+    }
+    // set timetravel
+    if (!timetravelList.includes(vote.timetravel)) {
+      vote.timetravel =
+        timetravelList[$t.timetraveloptions.indexOf(vote.timetravel)];
+    }
+    // set breakfast
+    if (!breakfastList.includes(vote.breakfast)) {
+      vote.breakfast =
+        breakfastList[$t.breakfastoptions.indexOf(vote.breakfast)];
+    }
     // set date
     const totalMinutes = 5.5 * 60 + minutesSinceFive;
     const hour = Math.floor(totalMinutes / 60);
     const minute = totalMinutes % 60;
     vote.getuptime = new Date(2025, 0, 1, hour, minute);
     console.log("Vote sent:", vote);
+    // send vote
     const voteDict = Object.keys(vote).reduce((acc, key) => {
       acc[key] = vote[key];
       return acc;
     }, {});
     try {
       await addDoc(collection(db, "votes"), voteDict);
-      // alert("Vote recorded!");
+      alert("Vote recorded!");
     } catch (e) {
       console.error("Error adding vote: ", e);
     }
@@ -84,7 +106,7 @@
       lon: 0,
     },
     getuptime: new Date(2025, 0, 1, 5, 30),
-    breakfast: "Sweet",
+    breakfast: "Nothing",
   };
   const timetravelList = ["Past", "Future"];
   const idolList = ["Superhero", "Wizard"];
@@ -95,20 +117,34 @@
   let EmojiPickRef = null;
 </script>
 
+<div
+  style="height: 30px; display:flex; justify-content:end; align-items:center;"
+>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div
+    class="switch {$lang === 'de' ? 'active' : ''}"
+    on:click={() => ($lang === "en" ? setLang("de") : setLang("en"))}
+    style="background-image: url('{$lang === 'en' ? 'de' : 'en'}.png')"
+  >
+    <div class="thumb"></div>
+  </div>
+</div>
+
 <div class="content-container">
-  <h1>Visualize Your Data</h1>
+  <h1>{$t.polltitle}</h1>
 
   <div class="question-container">
     <div class="question-content">
-      <h3>Where are you from?</h3>
+      <h3>{$t.locationquestion}</h3>
       <LocSelect bind:this={LocSelectRef} />
     </div>
   </div>
 
   <div class="question-container">
     <div class="question-content">
-      <h3>Would you rather be a superhero or a wizard?</h3>
-      {#each idolList as option}
+      <h3>{$t.idolquestion}</h3>
+      {#each $t.idoloptions as option}
         <label>
           <input
             type="radio"
@@ -124,15 +160,15 @@
 
   <div class="question-container">
     <div class="question-content">
-      <h3>What is your favorite emoji?</h3>
+      <h3>{$t.emojiquestion}</h3>
       <EmojiPicker bind:this={EmojiPickRef} />
     </div>
   </div>
 
   <div class="question-container">
     <div class="question-content">
-      <h3>What do you like to drink?</h3>
-      {#each drinkList as drink}
+      <h3>{$t.drinkquestion}</h3>
+      {#each $t.drinksoptions as drink}
         <label>
           <input type="checkbox" value={drink} bind:group={vote.drinks} />
           {drink}
@@ -143,8 +179,8 @@
 
   <div class="question-container">
     <div class="question-content">
-      <h3>Would you rather travel to the past or the future?</h3>
-      {#each timetravelList as option}
+      <h3>{$t.timetravelquestion}</h3>
+      {#each $t.timetraveloptions as option}
         <label>
           <input
             type="radio"
@@ -160,7 +196,7 @@
 
   <div class="question-container">
     <div class="question-content">
-      <h3>When did you get up today?</h3>
+      <h3>{$t.wakeuptimequestion}</h3>
       <label>
         <input
           type="range"
@@ -176,8 +212,8 @@
 
   <div class="question-container">
     <div class="question-content">
-      <h3>What did you eat for breatfast?</h3>
-      {#each breakfastList as option}
+      <h3>{$t.breakfastquestion}</h3>
+      {#each $t.breakfastoptions as option}
         <label>
           <input
             type="radio"
@@ -191,7 +227,7 @@
     </div>
   </div>
 
-  <button on:click={() => sendVote(vote)}>Submit</button>
+  <button on:click={() => sendVote(vote)}>{$t.pollbutton}</button>
 </div>
 
 <style>
@@ -217,15 +253,9 @@
 
   .content-container {
     font-family: "Inter", "Segoe UI", Arial, sans-serif;
-    background: #f4f7fb;
     color: var(--text-main);
-    margin: 0;
-    padding: 0;
-  }
-
-  .content-container {
     max-width: 480px;
-    margin: 2.5rem auto 2rem auto;
+    margin: 0.5rem auto 2rem auto;
     padding: 1.5rem;
     background: #fff;
     border-radius: 24px;
@@ -235,7 +265,8 @@
   h1 {
     text-align: center;
     font-size: 2.2rem;
-    margin-bottom: 2.2rem;
+    margin-bottom: 2rem;
+    margin-top: 0;
     color: var(--accent-dark);
     letter-spacing: 0.01em;
   }
@@ -304,7 +335,7 @@
     padding: 0.5em 0.9em;
     border-radius: var(--input-radius);
     border: 1.5px solid var(--input-border);
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 0.2em;
     transition: border 0.2s;
     background: #fff;
@@ -322,7 +353,7 @@
   button {
     display: block;
     width: 100%;
-    margin: 2.2rem auto 0 auto;
+    margin: 1.2rem auto 0 auto;
     padding: 0.9em 0;
     background: var(--button-bg);
     color: var(--button-text);
@@ -345,6 +376,33 @@
     outline: none;
   }
 
+  .switch {
+    height: 70%;
+    aspect-ratio: 1.6/1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 99999px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  }
+  .thumb {
+    height: 90%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: 5%;
+    left: 4%;
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .switch.active .thumb {
+    left: 40%;
+  }
+
   /* Responsive adjustments */
   @media (max-width: 600px) {
     .content-container {
@@ -354,6 +412,7 @@
     }
     h1 {
       font-size: 1.3rem;
+      margin-bottom: 1.3rem;
     }
     h3 {
       font-size: 1rem;

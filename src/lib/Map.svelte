@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import { base } from "$app/paths";
   import { hexbin as d3Hexbin } from "d3-hexbin";
+  import { t } from "$lib/i18n.js";
 
   // get Map image from https://www.mapchart.net/europe-detailed.html#
   // Isolate the map area and change background to transparent
@@ -267,19 +268,19 @@
       .attr("preserveAspectRatio", "none")
       .attr("clip-path", `url(#mapCircleClip)`);
 
-    // svg
-    //   .append("g")
-    //   .attr("class", "empty-hexagons")
-    //   .selectAll("circle")
-    //   .data(emptyCenters)
-    //   .join("circle")
-    //   .attr("cx", (d) => d.x)
-    //   .attr("cy", (d) => d.y)
-    //   .attr("r", hexbin.radius() * 0.85)
-    //   .attr("fill", customColors[0])
-    //   .attr("stroke", "none")
-    //   .attr("opacity", 0.8)
-    //   .attr("clip-path", `url(#mapCircleClip)`);
+    svg
+      .append("g")
+      .attr("class", "empty-hexagons")
+      .selectAll("circle")
+      .data(emptyCenters)
+      .join("circle")
+      .attr("cx", (d) => d.x)
+      .attr("cy", (d) => d.y)
+      .attr("r", hexbin.radius() * 0.78)
+      .attr("fill", customColors[0])
+      .attr("stroke", "none")
+      .attr("opacity", 0.2)
+      .attr("clip-path", `url(#mapCircleClip)`);
 
     svg
       .append("g")
@@ -289,7 +290,7 @@
       .join("circle")
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
-      .attr("r", hexbin.radius() * 0.85) // or adjust as needed
+      .attr("r", hexbin.radius() * 0.78)
       .attr("fill", (d) => color(d.length))
       .attr("color", (d) => color(d.length))
       .attr("stroke", "none")
@@ -324,38 +325,6 @@
       .attr("text-anchor", "left")
       .attr("alignment-baseline", "central")
       .text((d) => d.name);
-
-    // Optional debugging, draw points & circles
-    // svg
-    //   .append("g")
-    //   .attr("class", "points")
-    //   .selectAll("circle")
-    //   .data(points)
-    //   .join("circle")
-    //   .attr("cx", (d) => d[0])
-    //   .attr("cy", (d) => d[1])
-    //   .attr("r", 2)
-    //   .attr("fill", "red");
-
-    // svg
-    //   .append("g")
-    //   .attr("class", "points")
-    //   .selectAll("circle")
-    //   .data(farPoints)
-    //   .join("circle")
-    //   .attr("cx", (d) => d[0])
-    //   .attr("cy", (d) => d[1])
-    //   .attr("r", 2)
-    //   .attr("fill", "red");
-
-    // svg
-    //   .append("circle")
-    //   .attr("cx", x(mapCenter.x))
-    //   .attr("cy", y(mapCenter.y))
-    //   .attr("r", x(mapCenter.x + mapRadius) - x(mapCenter.x))
-    //   .attr("fill", "none")
-    //   .attr("stroke", "black")
-    //   .attr("opacity", 0.2);
   }
 
   export function update(votes, newVote) {
@@ -413,7 +382,7 @@
 </script>
 
 <div class="vis-component">
-  <h2>Where are you from?</h2>
+  <h2>{$t.maptitle}</h2>
   <svg bind:this={svgEl} viewBox="0 0 300 300"> </svg>
 </div>
 

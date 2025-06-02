@@ -6,6 +6,7 @@
   import { flip } from "svelte/animate";
   import { nonpassive } from "svelte/legacy";
   import { onMount, onDestroy } from "svelte";
+  import { t } from "$lib/i18n.js";
 
   let svgRef, svgAxRef, containerRef, width, height;
   let data = [];
@@ -145,7 +146,7 @@
 </script>
 
 <div class="vis-component double">
-  <h2>How did you get up today?</h2>
+  <h2>{$t.breakfasttitle}</h2>
   <div bind:this={containerRef} class="container">
     <div class="background sky"></div>
     <div class="background ground"></div>

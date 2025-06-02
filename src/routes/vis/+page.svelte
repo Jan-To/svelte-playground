@@ -5,12 +5,13 @@
   import { cubicOut } from "svelte/easing";
   import { initializeApp } from "firebase/app";
   import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+  import { map } from "d3";
   import Balls from "$lib/Balls.svelte";
   import Gauges from "$lib/Gauges.svelte";
   import Map from "$lib/Map.svelte";
   import Timetravel from "$lib/Timetravel.svelte";
   import Swarm from "$lib/Swarm.svelte";
-  import { map } from "d3";
+  import { t, lang, setLang } from "$lib/i18n.js";
 
   // Firebase configuration (hide this in production)
   const firebaseConfig = {
@@ -120,17 +121,17 @@
     >
     <img src="{base}/qr.png" alt="QR Code" class="qr-img" /> -->
     <div class="headline-text">
-      <h1 class="headline">See Beyond the Numbers</h1>
-      <h2 class="headline">Watch Your Data Come to Life</h2>
+      <h1 class="headline">{$t.title}</h1>
+      <h2 class="headline">{$t.subtitle}</h2>
     </div>
     <!-- <div style="width:12vw"></div> -->
     <div class="kpi-participants">
-      <span class="kpi-label">PARTICIPANTS</span>
+      <span class="kpi-label">{$t.participants}</span>
       <div class="kpi-numbers">
         <span class="kpi-value">{Math.round($animatedVotes)}</span>
         <div class="kpi-details">
           <span class="kpi-change">&#9650;{Math.round($votesLastHour)}</span>
-          <span class="kpi-change-label">last h</span>
+          <span class="kpi-change-label">{$t.lasth}</span>
         </div>
       </div>
     </div>
@@ -167,7 +168,7 @@
     <Swarm bind:this={swarmRef} />
 
     <div class="vis-component">
-      <h2>Become a part of this</h2>
+      <h2>{$t.callforaction}</h2>
       <div class="qr-container">
         <a href="{base}/poll">
           <img src="{base}/qr-trans.png" alt="QR Code" class="qr-img" /></a
@@ -178,6 +179,15 @@
 </div>
 
 <footer>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div
+    class="switch {$lang === 'de' ? 'active' : ''}"
+    on:click={() => ($lang === "en" ? setLang("de") : setLang("en"))}
+    style="background-image: url('{$lang === 'en' ? 'de' : 'en'}.png')"
+  >
+    <div class="thumb"></div>
+  </div>
   <span>Made with</span>
   <a href="https://svelte.dev" target="_blank" class="footer-img">
     <img src="{base}/svelte.png" alt="svelteLogo" />
@@ -213,6 +223,35 @@
     margin: 0 2.5vw;
     margin-top: 0.5vw;
   }
+
+  .switch {
+    height: 70%;
+    aspect-ratio: 1.6/1;
+    margin-right: auto;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 99999px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  }
+  .thumb {
+    height: 90%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: 5%;
+    left: 4%;
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .switch.active .thumb {
+    left: 40%;
+  }
+
   .qr-container {
     width: 100%;
     aspect-ratio: 2 / 1;
@@ -220,13 +259,14 @@
   }
   .qr-img {
     /* height: 6vw; */
-    height: 100%;
+    height: 95%;
     width: auto;
     margin: 0 auto;
     display: block;
   }
 
   .headline {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
     display: block;
     text-align: center;
     margin: 0.5vw 0;

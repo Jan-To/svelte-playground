@@ -1,5 +1,6 @@
 <script>
   import Gauge from "$lib/Gauge.svelte";
+  import { t } from "$lib/i18n.js";
 
   let gauges = [
     {
@@ -20,6 +21,7 @@
     {
       label: "Water",
       color: "#74ccf4",
+      waveTextColor: "#F3F3F3",
       value: 20,
       ref: null,
     },
@@ -121,7 +123,7 @@
 </script>
 
 <div class="vis-component">
-  <h2>What do you drink?</h2>
+  <h2>{$t.drinktitle}</h2>
   <div class="gauges">
     {#each gauges as gauge, i}
       <!-- svelte-ignore binding_property_non_reactive -->

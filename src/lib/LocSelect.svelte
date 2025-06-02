@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { onMount } from "svelte";
   import { base } from "$app/paths";
+  import { t } from "$lib/i18n.js";
 
   let query = "";
   let geonames = [];
@@ -70,7 +71,7 @@
   <input
     type="text"
     bind:value={query}
-    placeholder="Enter a city"
+    placeholder={$t.cityplaceholdertext}
     on:input={() => {
       selectedLoc = null;
       dropdownOpen = true;
