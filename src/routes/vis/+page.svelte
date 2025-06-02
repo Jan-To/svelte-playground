@@ -184,7 +184,7 @@
   >
     <div class="thumb"></div>
   </div>
-  <span>Made with</span>
+  <span>{$t.made}</span>
   <a href="https://svelte.dev" target="_blank" class="footer-img">
     <img src="{base}/svelte.png" alt="svelteLogo" />
   </a>
@@ -194,7 +194,7 @@
   <a href="https://github.com" target="_blank" class="footer-img">
     <img src="{base}/github.png" alt="githubLogo" />
   </a>
-  <span>at</span>
+  <span>{$t.at}</span>
   <a href="https://vis.cs.rptu.de/" target="_blank" class="footer-img">
     <img src="{base}/heikeLogo.png" alt="heikeLogo" />
   </a>

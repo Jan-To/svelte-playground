@@ -38,6 +38,8 @@ const translations = {
     polltitle: "Visualize Your Data",
     pollbutton: "Submit",
     pop: "pop.",
+    made: "Made with",
+    at: "at",
   },
   de: {
     title: "Sehen und Verstehen",
@@ -67,5 +69,7 @@ const translations = {
     polltitle: "Zeige deine Daten an",
     pollbutton: "Teilnehmen",
     pop: "Einwohner",
+    made: "Erstellt mit",
+    at: "von",
   },
 };
