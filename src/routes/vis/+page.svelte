@@ -108,11 +108,7 @@
         alt="Database"
         class="headline-img"
       />
-      <img
-        src="{base}/doc.png"
-        alt="Document"
-        class="document animate-document"
-      />
+      <img src="{base}/doc.png" alt="Document" class="document" />
     </div>
     <!-- <span
       class="kpi-change-label kpi-details"
@@ -137,18 +133,18 @@
     </div>
   </div>
   <div class="update-line-container">
-    <svg class="update-line" viewBox="-5 0 3010 35" preserveAspectRatio="none">
+    <svg class="update-line" viewBox="-5 -5 3015 45" preserveAspectRatio="none">
       <path
         class="line-path"
-        d="m0 5c0 11 6 22 21 22L3000 27"
+        d="m0 0c0 15 0 35 25 35l2975-8"
         stroke="#f2f2f2"
         stroke-width="10"
         stroke-linecap="round"
         fill="none"
       />
       <path
-        class="line-path moving-line animate-moving-line"
-        d="m0 5c0 11 6 22 21 22L3000 27"
+        class="line-path moving-line"
+        d="m0 0c0 15 0 35 25 35l2975-8"
         stroke="#4C5B94"
         stroke-width="10"
         stroke-linecap="round"
@@ -206,6 +202,8 @@
     <img src="{base}/rptuLogo.png" alt="rptuLogo" />
   </a>
 </footer>
+
+<div class="animate-moving-line animate-document"></div>
 
 <style>
   :root {
@@ -381,7 +379,7 @@
 
   .update-line-container {
     width: auto;
-    height: 1vw;
+    height: 1.5vw;
     position: relative;
     margin: 0 2.5vw;
   }
@@ -389,20 +387,20 @@
   .update-line {
     position: absolute;
     left: 0;
-    top: -5px;
+    top: -45%;
     width: 100%;
     height: 100%;
   }
 
   .animate-moving-line {
-    stroke-dasharray: 3020;
-    stroke-dashoffset: 3020;
+    stroke-dasharray: 3025;
+    stroke-dashoffset: 3025;
     animation: draw-line var(--doc-update) ease-in-out var(--doc-delay) forwards;
   }
 
   @keyframes draw-line {
     0% {
-      stroke-dashoffset: 3020;
+      stroke-dashoffset: 3025;
     }
     100% {
       stroke-dashoffset: 0;
@@ -416,7 +414,7 @@
     align-items: start;
     width: 100%;
     box-sizing: border-box;
-    margin: 1vw 0;
+    margin: 0.5vw 0;
   }
 
   :global(.vis-component) {
