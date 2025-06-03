@@ -210,7 +210,7 @@
     --vis-min-width: 100px;
     --vis-max-width: 700px;
     --doc-delay: 4s;
-    --doc-update: 6s;
+    --doc-update: 10s;
   }
 
   :global(body) {
@@ -394,14 +394,15 @@
 
   .animate-moving-line {
     stroke-dasharray: 3025;
-    stroke-dashoffset: 3025;
-    animation: draw-line var(--doc-update) ease-in-out var(--doc-delay) forwards;
+    animation: draw-line var(--doc-update) ease-in-out forwards;
   }
 
   @keyframes draw-line {
-    0% {
+    10%,
+    40% {
       stroke-dashoffset: 3025;
     }
+    0%,
     100% {
       stroke-dashoffset: 0;
     }

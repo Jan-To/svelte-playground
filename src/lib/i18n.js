@@ -71,7 +71,7 @@ const translations = {
     idolquestion: "Lieber ein Superheld oder ein Zauberer?",
     emojiquestion: "Was ist dein Lieblings-Emoji?",
     drinkquestion: "Was trinkst du gerne?",
-    timetravelquestion: "Würdest du lieber in die Vergangenheit oder die Zukunft reisen?",
+    timetravelquestion: "Lieber in die Vergangenheit oder die Zukunft reisen?",
     wakeuptimequestion: "Wann bist du heute aufgestanden?",
     breakfastquestion: "Was hast du zum Frühstück gegessen?",
     breakfastoptions: ["Süß", "Salzig", "Nichts"],
