@@ -8,36 +8,23 @@
   import { onMount, onDestroy } from "svelte";
   import { t } from "$lib/i18n.js";
 
-  let svgRef, svgAxRef, containerRef, width, height;
-  let data = [];
+  let svgRef, svgAxRef, containerRef;
+  let data = $state([]);
+  let radius = $state(18);
+  const width = 600;
+  const height = 150;
   const marginTop = 5;
   const marginRight = 30;
   const marginBottom = 23;
   const marginLeft = 30;
   const padding = 1;
-  let radius = 18;
   const time = 60;
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dez",
-  ];
-  let currentIndex = 6;
-  let currentMonth = months[currentIndex];
+  let currentIndex = $state(6);
+  let currentMonth = $derived($t.months[currentIndex]);
   // Change the string every second
   const interval = setInterval(
     () => {
-      currentIndex = (currentIndex + 1) % months.length;
-      currentMonth = months[currentIndex];
+      currentIndex = (currentIndex + 1) % 12;
     },
     (time * 1000) / 12,
   );
@@ -117,7 +104,6 @@
     }));
 
     const svg = d3.select(svgRef);
-    [, , width, height] = svg.attr("viewBox").split(" ").map(Number);
 
     const timeScale = scaleTime()
       .domain([new Date(2025, 0, 1, 5, 30), new Date(2025, 0, 1, 9, 0)])
@@ -195,8 +181,8 @@
         {/each}
       </g>
     </svg>
-    <svg bind:this={svgAxRef} viewBox="0 0 600 150" class="axSVG">
-      <text x="580" y="19" font-size="13" text-anchor="middle"
+    <svg bind:this={svgAxRef} viewBox="0 0 {width} {height}" class="axSVG">
+      <text x="579" y="19" font-size="13" text-anchor="middle"
         >{currentMonth}</text
       >
     </svg>

@@ -166,7 +166,7 @@
     <div class="vis-component">
       <h2>{$t.callforaction}</h2>
       <div class="qr-container">
-        <a href="{base}/poll">
+        <a href="{base}/poll" target="_blank">
           <img src="{base}/qr.png" alt="QR Code" class="qr-img" /></a
         >
       </div>
