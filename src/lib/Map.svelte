@@ -36,6 +36,11 @@
   let svgEl;
   let x, y, bins, farBins, mapCenter;
 
+  let resolveMount;
+  const mounted = new Promise((resolve) => {
+    resolveMount = resolve;
+  });
+
   onMount(async () => {
     const res = await fetch(base + "/DE.min.json");
     geonames = await res.json();
@@ -54,6 +59,7 @@
         };
       })
       .filter((loc) => loc !== undefined);
+    resolveMount();
   });
 
   function projectToCircle(d, center, radius) {
@@ -71,7 +77,8 @@
     };
   }
 
-  export function draw(votes) {
+  export async function draw(votes) {
+    await mounted;
     // setup svg
     if (!svgEl) return;
     d3.select(svgEl).selectAll("*").remove();
