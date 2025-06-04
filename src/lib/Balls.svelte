@@ -342,7 +342,6 @@
       ticks++;
       if (ticks > 1000) {
         simulation.stop();
-        console.log("Simulation stopped after 1000 ticks");
         return;
       }
 
@@ -526,6 +525,7 @@
       balls.push(ball);
       simulation.nodes(balls);
       ticks = 0;
+      simulation.stop();
       simulation.restart();
 
       [sideCountA, sideCountB] = getSideCount();

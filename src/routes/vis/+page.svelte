@@ -4,7 +4,14 @@
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import { initializeApp } from "firebase/app";
-  import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+  import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    getDocs,
+    deleteDoc,
+    doc,
+  } from "firebase/firestore";
   import { map } from "d3";
   import Balls from "$lib/Balls.svelte";
   import Gauges from "$lib/Gauges.svelte";
@@ -12,6 +19,7 @@
   import Timetravel from "$lib/Timetravel.svelte";
   import Swarm from "$lib/Swarm.svelte";
   import { t, lang, setLang } from "$lib/i18n.js";
+  import DeleteVotes from "$lib/DeleteVotes.svelte";
 
   // Firebase configuration (hide this in production)
   const firebaseConfig = {
@@ -26,7 +34,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  let oldVotes = [];
+  let firstDraw = true;
   let currentVotes = [];
   let newVote = {};
   const animatedVotes = tweened(0, { duration: 800, easing: cubicOut });
@@ -64,14 +72,14 @@
     const unsubscribe = onSnapshot(
       collection(db, "votes"),
       async (snapshot) => {
-        oldVotes = currentVotes;
         currentVotes = snapshot.docs.map((doc) => doc.data());
         const newestVote = currentVotes
           .filter((v) => v.time)
           .sort((a, b) => b.time - a.time)[0];
         await tick();
         console.log("got new Votes:", currentVotes);
-        if (oldVotes.length == 0) {
+        if (firstDraw) {
+          firstDraw = false;
           ballsRef.draw(currentVotes);
           gaugesRef.draw(currentVotes);
           mapRef.draw(currentVotes);
@@ -201,6 +209,7 @@
   <a href="https://rptu.de" target="_blank" class="footer-img footer-img--rptu">
     <img src="{base}/rptuLogo.png" alt="rptuLogo" />
   </a>
+  <DeleteVotes {db} />
 </footer>
 
 <div class="animate-moving-line animate-document"></div>

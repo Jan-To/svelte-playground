@@ -55,7 +55,10 @@
   }
 
   function setTravelPercent(travelCounts) {
-    const allCounts = travelCounts["Past"] + travelCounts["Future"];
+    const allCounts = Math.max(
+      1,
+      travelCounts["Past"] + travelCounts["Future"],
+    );
     retroPercent.set(travelCounts["Past"] / allCounts);
     futurePercent.set(travelCounts["Future"] / allCounts);
   }

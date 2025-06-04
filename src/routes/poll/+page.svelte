@@ -80,7 +80,6 @@
     const hour = Math.floor(totalMinutes / 60);
     const minute = totalMinutes % 60;
     vote.getuptime = new Date(2025, 0, 1, hour, minute);
-    console.log("Vote sent:", vote);
     // send vote
     const voteDict = Object.keys(vote).reduce((acc, key) => {
       acc[key] = vote[key];
