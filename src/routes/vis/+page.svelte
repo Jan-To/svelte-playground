@@ -34,16 +34,13 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  let firstDraw = true;
-  let currentVotes = [];
-  let newVote = {};
   const animatedVotes = tweened(0, { duration: 800, easing: cubicOut });
   const votesLastHour = tweened(0, { duration: 800, easing: cubicOut });
 
-  function updateKPI() {
-    animatedVotes.set(currentVotes.length);
+  function updateKPI(votes) {
+    animatedVotes.set(votes.length);
     votesLastHour.set(
-      currentVotes.filter(
+      votes.filter(
         (v) => v.time && Date.now() / 1000 - v.time.seconds < 60 * 60,
       ).length,
     );
@@ -67,45 +64,69 @@
   let mapRef;
   let timetravelRef;
   let swarmRef;
+  let firstDraw = true;
+  let updateQueue = [];
+  let isUpdating = false;
 
   onMount(() => {
     const unsubscribe = onSnapshot(
       collection(db, "votes"),
       async (snapshot) => {
-        currentVotes = snapshot.docs.map((doc) => doc.data());
-        const newestVote = currentVotes
-          .filter((v) => v.time)
-          .sort((a, b) => b.time - a.time)[0];
-        await tick();
-        console.log("got new Votes:", currentVotes);
-        if (firstDraw) {
-          firstDraw = false;
-          ballsRef.draw(currentVotes);
-          gaugesRef.draw(currentVotes);
-          mapRef.draw(currentVotes);
-          timetravelRef.draw(currentVotes);
-          swarmRef.draw(currentVotes);
-          updateKPI();
-        } else {
-          await delay(2000);
-          await restartAnimations();
-          await delay(4000);
-          gaugesRef.update(currentVotes, newestVote);
-          await delay(1200);
-          mapRef.update(currentVotes, newestVote);
-          await delay(1500);
-          ballsRef.update(currentVotes, newestVote);
-          // await delay(500);
-          timetravelRef.update(currentVotes, newestVote);
-          // await delay(8000);
-          swarmRef.update(currentVotes);
-          updateKPI();
-        }
+        const voteData = snapshot.docs.map((doc) => doc.data());
+        enqueueUpdate(voteData);
       },
     );
-    // cleanup if component is destroyed
     return () => unsubscribe();
   });
+
+  function enqueueUpdate(votes) {
+    updateQueue.push(votes);
+    processQueue();
+  }
+
+  async function processQueue() {
+    if (isUpdating || updateQueue.length === 0) return;
+
+    isUpdating = true;
+    const votes = updateQueue.shift();
+
+    const newestVote = votes
+      .filter((v) => v.time)
+      .sort((a, b) => b.time - a.time)[0];
+
+    await tick();
+    console.log("got new Votes:", votes);
+
+    if (firstDraw) {
+      firstDraw = false;
+      ballsRef.draw(votes);
+      gaugesRef.draw(votes);
+      mapRef.draw(votes);
+      timetravelRef.draw(votes);
+      swarmRef.draw(votes);
+      updateKPI(votes);
+    } else {
+      await delay(2000);
+      await restartAnimations();
+      await delay(4000);
+      gaugesRef.update(votes, newestVote);
+      await delay(1200);
+      mapRef.update(votes, newestVote);
+      await delay(1500);
+      ballsRef.update(votes, newestVote);
+      timetravelRef.update(votes, newestVote);
+      swarmRef.update(votes);
+      updateKPI(votes);
+      await delay(5000);
+    }
+
+    isUpdating = false;
+
+    // Process the next update if it exists
+    if (updateQueue.length > 0) {
+      processQueue();
+    }
+  }
 </script>
 
 <div class="page">
