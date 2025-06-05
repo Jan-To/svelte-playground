@@ -79,7 +79,7 @@
     }
     let max_y = 0;
     if (circles.length > 0) {
-      circles.map((c) => c.y).reduce((p, c) => (p > c ? p : c));
+      max_y = circles.map((c) => c.y).reduce((p, c) => (p > c ? p : c));
     }
 
     return [circles, max_y];
