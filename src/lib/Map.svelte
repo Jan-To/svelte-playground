@@ -324,9 +324,9 @@
       .text((d) => d.name);
   }
 
-  export function update(votes, newVote) {
+  export async function update(votes, newVote) {
     if (!svgEl || !newVote) return;
-    draw(votes);
+    await draw(votes);
     let vote = {};
     if (
       newVote.location &&
@@ -388,9 +388,6 @@
     width: 100%;
     height: auto;
     background: none;
-    /* background: #f8fafc; */
-    /* border-radius: 0.5rem; */
-    /* box-shadow: 0 2px 8px #0001; */
     margin: 0 auto;
   }
 
